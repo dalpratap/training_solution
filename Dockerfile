@@ -19,4 +19,4 @@ WORKDIR /app
 COPY --from=build-env /app/out ./
 
 #Run the application
-ENTRYPOINT ["dotnet", "Myapp.dll"]
+ENTRYPOINT ["dotnet", "WebApplication1.dll"]
