@@ -16,12 +16,12 @@ WORKDIR /app
 
 # Set environment
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_URLS=http://+:5000
 
 # Copy build output
 COPY --from=build /app/publish .
 
 # Expose port
-EXPOSE 80
+EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "WebApplication1.dll"]
