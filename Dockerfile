@@ -1,22 +1,27 @@
-#Stage 1: Build envoirnment
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
-WORKDIR /app
+# Stage 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 
-#copy everything into container
-COPY . ./
-
-#Restore dependency
+# Copy only csproj first (better caching)
+COPY *.csproj ./
 RUN dotnet restore
 
-#Build and publish the app
-RUN dotnet publish -c Release -o out
+# Copy rest of the code
+COPY . ./
+RUN dotnet publish -c Release -o /app/publish
 
-#Stage 2 Runtime envoirnment
+# Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
-#Copy published output from build stage
-COPY --from=build-env /app/out ./
+# Set environment
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:80
 
-#Run the application
+# Copy build output
+COPY --from=build /app/publish .
+
+# Expose port
+EXPOSE 80
+
 ENTRYPOINT ["dotnet", "WebApplication1.dll"]
