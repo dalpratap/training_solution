@@ -12,7 +12,7 @@ pipeline {
 
         stage('Fetch Code') {
             steps {
-                git url:"https://github.com/YOURACC/imgpush.git", branch:"main"
+                git url:"https://github.com/shikoh-zaidi/training_solution.git", branch:"main"
             }
         }
 
@@ -56,10 +56,7 @@ pipeline {
                 docker stop webapp || true
                 docker rm webapp || true
 
-                docker run -d \
-                  --name $CONTAINER_NAME \
-                  -p 80:5000 \
-                  $IMAGE_NAME:$IMAGE_TAG
+                docker run -d --name $CONTAINER_NAME -p 80:5000 $IMAGE_NAME:$IMAGE_TAG
                 '''
             }
         }
